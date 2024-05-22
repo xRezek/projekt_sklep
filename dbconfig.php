@@ -1,8 +1,8 @@
 <?php
 
 $server = 'localhost';
-$user = 'operator';
-$pass = '123456';
+$user = 'root';
+$pass = '';
 $base = 'sklep'
 
 ?>

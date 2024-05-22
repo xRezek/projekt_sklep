@@ -1,10 +1,25 @@
+<?php
+  include 'dbconfig.php';
+  include 'debug.php';
+  $conn = @mysqli_connect($server,$user,$pass,$base);
+  $query = "SELECT DISTINCT name, img, alt FROM merch ORDER BY id DESC LIMIT 6;";
+  $result = mysqli_query($conn,$query);
+  $rows = mysqli_fetch_all($result);
+  
+  
+ // dump($rows);
+  
+  mysqli_close($conn);
+  //exit;
+?>
 <!DOCTYPE html>
 <html lang="pl-PL">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="./images/cyberpunk.png">
+  <link rel="icon" type="image/x-icon" href="./images/clothes-rack.png"> <!-- <a https://www.flaticon.com/free-icons/clothes Clothes icons created by Freepik - Flaticon  -->
+  <link rel="stylesheet" href="./css/clearstyle.css">
   <link rel="stylesheet" href="./css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/bootstrap-icons.min.css">
@@ -12,11 +27,11 @@
 </head>
 
 <body>
-  <header class="container-fluid">
-    <div class="container-fluid">
+  <header>
+    
       <nav class="navbar nav-underline navbar-expand-lg bg-white ">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#"><img class="img-fluid" width="70" length="70" src="./images/_2c6136cf-ef31-4a72-af0d-4300fe95d5b9.jpg"></a>
+          <a class="navbar-brand" href="#"><img class="img-fluid" width="70" length="70" src="./images/logo.jpg"></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -31,18 +46,14 @@
                   Produkty
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Wszyskie</a></li>
-                  <li><a class="dropdown-item" href="#">Kora czołowa</a></li>
-                  <li><a class="dropdown-item" href="#">Oczy</a></li>
-                  <li><a class="dropdown-item" href="#">Układ krwionośny</a></li>
-                  <li><a class="dropdown-item" href="#">Układ immunologinczny</a></li>
-                  <li><a class="dropdown-item" href="#">Układ nerwowy</a></li>
-                  <li><a class="dropdown-item" href="#">Skóra</a></li>
-                  <li><a class="dropdown-item" href="#">System operacyjny</a></li>
-                  <li><a class="dropdown-item" href="#">Szkielet</a></li>
-                  <li><a class="dropdown-item" href="#">Ręce</a></li>
-                  <li><a class="dropdown-item" href="#">Ramiona</a></li>
-                  <li><a class="dropdown-item" href="#">Nogi</a></li>
+                  <li><a class="dropdown-item" href="#">Wszystko</a></li>
+                  <li><a class="dropdown-item" href="#">Marynarka</a></li>
+                  <li><a class="dropdown-item" href="#">Koszule z krótkim rękawem</a></li>
+                  <li><a class="dropdown-item" href="#">Kouszula</a></li>
+                  <li><a class="dropdown-item" href="#">Podkoszulki</a></li>
+                  <li><a class="dropdown-item" href="#">Spodenki</a></li>
+                  <li><a class="dropdown-item" href="#">Spodnie</a></li>
+                  <li><a class="dropdown-item" href="#">Buty</a></li>
                 </ul>
               <li class="nav-item">
                 <a class="nav-link p-2 ms-4" href="aboutUs.php">O Nas</a>
@@ -63,97 +74,70 @@
           </div>
         </div>
       </nav>
-    </div>
+    
   </header>
   <!-- main -->
   <main class="container p-3">
     <div class="row gx-4">
       <div class="col-2 bg-light shadow-lg rounded">jfkadsh</div>
       
-      <div class="col-8 bg-light shadow-lg rounded">
+      <div class="col-8 bg-light shadow-lg rounded mx-4">
         <div class="row ">
           <div class="col h2">Co nowego?</div>
         </div>
         
         <div class="row p-2">  
           <div class="col-5 mx-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
+            <div class="card-body p-4"><img src="./images/<?=$rows[0][1]?>" alt="<?= $rows[0][2]?>" class="img-fluid d-block mx-auto mb-3">
+              <h5> <a href="#" class="text-dark"><?= $rows[0][0]?></a></h5>
               <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
           </div>
           <div class="col-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
+            <div class="card-body p-4"><img src="./images/<?=$rows[1][1]?>" alt="<?= $rows[1][2]?>" class="img-fluid d-block mx-auto mb-3">
+              <h5> <a href="#" class="text-dark"><?= $rows[1][0]?></a></h5>
               <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
           </div>
         </div>
         <div class="row p-2">  
           <div class="col-5 mx-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
+            <div class="card-body p-4"><img src="./images/<?=$rows[2][1]?>" alt="<?= $rows[2][2]?>" class="img-fluid d-block mx-auto mb-3">
+              <h5> <a href="#" class="text-dark"><?= $rows[2][0]?></a></h5>
               <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
           </div>
           <div class="col-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
+            <div class="card-body p-4"><img src="./images/<?=$rows[3][1]?>" alt="<?= $rows[3][2]?>" class="img-fluid d-block mx-auto mb-3">
+              <h5> <a href="#" class="text-dark"><?= $rows[3][0]?></a></h5>
               <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
           </div>
         </div>
         <div class="row p-2">  
           <div class="col-5 mx-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
+            <div class="card-body p-4"><img src="./images/<?=$rows[4][1]?>" alt="<?= $rows[4][2]?>" class="img-fluid d-block mx-auto mb-3">
+              <h5> <a href="#" class="text-dark"><?= $rows[4][0]?></a></h5>
               <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
           </div>
           <div class="col-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
+            <div class="card-body p-4"><img src="./images/<?=$rows[5][1]?>" alt="<?= $rows[5][2]?>" class="img-fluid d-block mx-auto mb-3">
+              <h5> <a href="#" class="text-dark"><?= $rows[5][0]?></a></h5>
               <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
           </div>
         </div>
-        <div class="row p-2">  
-          <div class="col-5 mx-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
-              <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-            </div>
-          </div>
-          <div class="col-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
-              <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-            </div>
-          </div>
-        </div>
-        <div class="row p-2">  
-          <div class="col-5 mx-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
-              <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-            </div>
-          </div>
-          <div class="col-5 card rounded shadow">
-            <div class="card-body p-4"><img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">
-              <h5> <a href="#" class="text-dark">Awesome product</a></h5>
-              <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-            </div>
-          </div>
-        </div>
+        
       </div>
       
-      <div class="col-2  bg-light shadow-lg rounded">ajlsdfk</div>
+      <div class="col-1  bg-light shadow-lg rounded">ajlsdfk</div>
     </div>
   </main>
   <footer class="container-fluid">
     <div class="row bg-black text-light">
       <div class="col">
-        fdgdhsiodfhkjliduoghk
+        
       </div>
     </div>
   

@@ -14,7 +14,7 @@
       <div class="container-fluid">
         <nav class="navbar nav-underline navbar-expand-lg bg-body-tertiary ">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img class="img-fluid" width="70" length="70" src="./images/logo.png"></a>
+            <a class="navbar-brand" href="#"><img class="img-fluid" width="70" length="70" src="./images/logo.jpg"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
