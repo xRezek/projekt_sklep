@@ -3,7 +3,7 @@
   box-sizing: border-box;
 }
 body{
-  background-color: #f0eeee;
+  background-color: #faf9f8;
 }
 .inside-main{
   display: flex;
@@ -15,4 +15,26 @@ body{
 }
 .max-width{
   max-width: 4px;
+}
+
+.footer-bg{
+  background-color: #e4e4e4;
+}
+.landing-bg{
+  background-image: url("../images/newCollection.jpg");
+  min-width: 870px;
+  min-height: 870px;
+  margin: auto;
+  
+}
+.onlyonepixel{
+  margin: 1px;
+}
+.contact {  
+  padding-top: 70px;
+  position: relative;
+  left: 0;
+  bottom: 0;
+  height: 200px;
+  width: 100%;
 }

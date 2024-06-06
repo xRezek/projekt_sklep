@@ -3,6 +3,6 @@
 $server = 'localhost';
 $user = 'root';
 $pass = '';
-$base = 'sklep'
+$base = 'sklep';
 
 ?>
