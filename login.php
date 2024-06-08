@@ -1,19 +1,19 @@
-<?php
-  session_start();
-
-?>
 <!DOCTYPE html>
 <html lang="pl-PL">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="./images/cyberpunk.png">
-  <link rel="stylesheet" href="./css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/style.css">
-  <title>Projekt</title>
-</head>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./images/clothes-rack.png"> <!-- <a https://www.flaticon.com/free-icons/clothes Clothes icons created by Freepik - Flaticon  -->
+    <link rel="stylesheet" href="./css/clearstyle.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/bootstrap-icons.min.css">
+    <title>Projekt</title>
+  </head>
+
   <body>
-  <header>      
+    <header>      
         <nav class="navbar nav-underline navbar-expand-lg bg-white ">
           <div class="container-fluid">
             <a class="navbar-brand" href="#"><img class="img-fluid" width="70" length="70" src="./images/logo.jpg"></a>
@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
               <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                  <a class="nav-link active p-2 ms-4" aria-current="page" href="#">Strona Główna</a>
+                  <a class="nav-link active p-2 ms-4" aria-current="page" href="index.php">Strona Główna</a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -53,13 +53,8 @@
                   </ul>
                 </li>
               </ul>
-              <?php if(isset($_SESSION['login'])):?>
-                <div class="nav-item p-2 d-flex"><?= 'Witaj ' . $_SESSION['login'].' &#9787'?></div>
-                <div class="nav-item p-2 d-flex"><a href="logout.php" class="nav-link">Wyloguj się</a></div>
-              <?php else:?>
-                <div class="nav-item p-2 d-flex"><a href="login.php" class="nav-link">Zaloguj się</a></div>
-                <div class="nav-item p-2 d-flex"><a href="#" class="nav-link">Zarejestruj się</a></div>
-              <?php endif;?>  
+              <div class="nav-item p-2 d-flex"><a href="#" class="nav-link">Zaloguj się</a></div>
+              <div class="nav-item p-2 d-flex"><a href="#" class="nav-link">Zarejestruj się</a></div>
               <div class="nav-item p-2 d-flex">
                 <a href="#">
                   <button class="d-flex btn-lg btn btn-light text-nowrap btn-outline-dark me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -79,67 +74,59 @@
       </div>
       <div class="offcanvas-body">
         <div>
-          <?php
-            if(!isset($_SESSION['login'])){
-              echo '<h3>Musisz się zalogować aby zobaczyć swój koszyk</h3>';
-            }
-            else{
-              echo '<h3>koszyk</h3>';
-            }
-          ?>
+          Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
         </div>      
       </div>
     </div>
 <!------------------------------------------------>
-    <main class="container-fluid">    
-      <div class="row">
-        <div class="col pt-2">
-          <img src="./images/_5930f66c-823c-46e8-8ad0-c9cb37188f04.jpg" alt="Modelka" class="img-fluid">
-          <img src="./images/_b8557617-f6bf-4a3b-98d6-4e16559a55e9.jpg " alt="Model" class="img-fluid mt-1">
-            
-        </div>
-        <div class="col-6 pt-2">
-          <div class="row bg-light p-3 rounded-top">
-            <div class="col text-center h1">
-              Odkryj Swoją Modową Wizję z Naszym Sklepem Odzieżowym!
+    <!-- main -->
+    <main class="container p-3">
+    <section class="bg-light py-3 py-md-5">
+
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+        <div class="card border border-light-subtle rounded-3 shadow">
+          <div class="card-body p-3 p-md-4 p-xl-5">
+            <div class="text-center mb-3">
+              <img src="./images/logo.jpg" alt="BootstrapBrain Logo" width="200" height="175">
             </div>
+            <form action="validateLogin.php" method="POST">
+              <div class="row gy-2 overflow-hidden">
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                    <label for="email" class="form-label">Email</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <input type="password" class="form-control" name="password" id="password" value="" placeholder="Hasło" required>
+                    <label for="password" class="form-label">Hasło</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="d-flex gap-2 justify-content-between">
+                    <a href="#!" class="link-dark text-decoration-none">Forgot password?</a>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="d-grid my-3">
+                    <button class="btn btn-dark btn-lg" type="submit">Zaloguj się</button>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <p class="m-0 text-secondary text-center">Nie masz konta? <a href="#!" class="link-dark text-decoration-none">Zarejestruj się</a></p>
+                </div>
+              </div>
+            </form>
           </div>
-          <div class="row">
-            <div class="col">
-              <div class="h3">Twój Styl, Nasza Pasja: Najnowsze Trendy dla Ciebie!</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <hr class="border-2 bg-black">
-              <p class="display-6">
-                Jesteśmy sklepem odzieżowym, gdzie moda łączy się z wygodą, a styl staje się osobistą wizytówką każdego klienta. Nasza misja to nie tylko dostarczanie najnowszych trendów, ale także inspiracja do wyrażania siebie poprzez ubrania. Z pasją selekcjonujemy najwyższej jakości produkty, które nie tylko podkreślą Twój indywidualny styl, ale również sprawią, że będziesz się czuł wyjątkowo. Niezależnie od okazji, nasz sklep jest miejscem, w którym każdy może znaleźć coś dla siebie - od klasycznych klasyków po odważne nowości. Dołącz do naszej społeczności modowej i odkryj, jak odzież może zmieniać świat i Twoje życie!
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col pt-2">
-          <img src="./images/_4787f272-331e-468c-a7e2-70c5ca7ec429.jpg" alt="model" class="img-fluid">
-          <img src="./images/_724368c0-0cf9-4d4f-b02c-3edbd2ae4092.jpg" alt="Modelka" class="img-fluid mt-1">
         </div>
       </div>
-</main> 
-    <footer class="container-fluid footer-bg shadow">
-      <div class="row grey-bg ">
-        <div class="col-4 footer-bg text-center p-3">
-          <?= "Projekt&copy " . date('Y');  ?>
-        </div>
-        <div class="col-4 text-center footer-bg">
-          <h6>Social media:</h6>
-          <p><i class="bi bi-facebook"></i> <i class="bi bi-tiktok"></i> <i class="bi bi-instagram"></i> <i class="bi bi-youtube"></i></p>
-        </div>
-        <div class="col-4  text-center footer-bg">
-        <a href="admin_login.php" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Panel administratora</a>
-        </div>
-      </div>
-    
-    </footer>
-    
+    </div>
+</section>
+
+
+
 
     <script src="./scripts/bootstrap.bundle.min.js"></script>
     <script src="./scripts/app.js"></script>
