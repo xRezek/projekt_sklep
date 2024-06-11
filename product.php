@@ -5,7 +5,7 @@
  $query = "SELECT * FROM merch WHERE img ='" . $_GET['product'] . "' LIMIT 1";
  $result = mysqli_query($conn,$query);
  $rows = mysqli_fetch_assoc($result);
- 
+ session_start();
  //dump($rows);
  mysqli_close($conn);
  ?>
@@ -35,7 +35,7 @@
     <title>Projekt</title>
   </head>
 
-  <body>
+  <body style="background-color: #e9eef5;">
   <header>      
         <nav class="navbar nav-underline navbar-expand-lg bg-white ">
           <div class="container-fluid">
@@ -46,7 +46,7 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
               <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                  <a class="nav-link p-2 ms-4" aria-current="page" href="#">Strona Główna</a>
+                  <a class="nav-link p-2 ms-4" aria-current="page" href="index.php">Strona Główna</a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -118,8 +118,8 @@
                         <div class="card-body">
                             <h1 class="h2"><?= $rows['name']?></h1>
                             <p class="h3 py-2"><?= $rows['price']. ' zł'?></p>
-                            <form action="" method="GET">
-                                <input type="hidden" name="product-title" value="Activewear">
+                            <form action="addToCart.php" method="GET">
+                                <input type="hidden" name="product-title" value="<?= $rows['img']?>">
                                 <div class="row">
                                     <div class="col-auto">
                                         <ul class="list-inline pb-3">
@@ -139,7 +139,7 @@
                                         <ul class="list-inline pb-3">
                                             <li class="list-inline-item text-right">
                                                 Quantity:
-                                                <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+                                                <input type="hidden" name="product-quantity" id="product-quantity" value="1">
                                             </li>
                                             <li class="list-inline-item"><span class="btn btn-dark" id="btn-minus">-</span></li>
                                             <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
@@ -150,7 +150,12 @@
                                 <div class="row pb-3">
                                    
                                     <div class="col d-grid">
-                                        <button type="submit" class="btn btn-dark btn-lg" name="submit" value="addtocard">Add To Cart</button>
+                                        <button type="submit" class="btn btn-dark btn-lg" name="submit" value="addtocard">Dodaj do koszyka</button>
+                                        <?php if(isset($_SESSION['statement'])):
+                                        echo $_SESSION['statement'];
+                                        unset($_SESSION['statement']);
+                                        endif;
+                                      ?>
                                     </div>
                                 </div>
                             </form>
@@ -162,7 +167,7 @@
         </div>
     </section>
     <!-------------------------------------------->
-    <footer class="container-fluid footer-bg shadow contact">
+    <footer class="container-fluid footer-bg shadow fixed-bottom ">
       <div class="row grey-bg ">
         <div class="col-4 footer-bg text-center p-3">
           <?= "Projekt&copy " . date('Y');  ?>

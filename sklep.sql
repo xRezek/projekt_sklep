@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 22, 2024 at 10:47 PM
+-- Generation Time: Cze 11, 2024 at 11:22 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -24,16 +24,54 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `client_id`, `product_id`, `quantity`) VALUES
+(12, 11, 5, 1),
+(13, 11, 1, 1),
+(14, 11, 28, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `clients`
 --
 
 CREATE TABLE `clients` (
   `id` int(11) NOT NULL,
-  `email` int(11) NOT NULL,
-  `login` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `login` varchar(100) NOT NULL,
   `password` varchar(512) NOT NULL,
-  `address` int(11) DEFAULT NULL
+  `address` varchar(1024) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `clients`
+--
+
+INSERT INTO `clients` (`id`, `email`, `login`, `password`, `address`) VALUES
+(11, 'jan.kowalski@example.com', 'jkowalski', 'pass123', 'ul. Słoneczna 15, Warszawa, 00-001'),
+(12, 'anna.nowak@example.com', 'anowak', 'secure456', 'ul. Kwiatowa 32, Kraków, 30-001'),
+(13, 'tomasz.adamczyk@example.com', 'tadamczyk', 'qwerty789', 'ul. Długa 8, Poznań, 60-101'),
+(14, 'agnieszka.wozniak@example.com', 'awozniak', 'password12', 'ul. Krótka 22, Wrocław, 50-001'),
+(15, 'pawel.zielinski@example.com', 'pzielinski', 'abc123xyz', 'ul. Szkolna 5, Gdańsk, 80-001'),
+(16, 'ewa.kaczmarek@example.com', 'ekaczmarek', 'secret321', 'ul. Miodowa 14, Szczecin, 70-001'),
+(17, 'michal.lewandowski@example.com', 'mlewandowski', 'mypassword', 'ul. Leśna 9, Łódź, 90-001'),
+(18, 'katarzyna.kwiatkowska@example.com', 'kkwiatkowska', 'letmein123', 'ul. Polna 3, Lublin, 20-001'),
+(19, 'wojciech.nowicki@example.com', 'wnowicki', 'changeme', 'ul. Lipowa 18, Katowice, 40-001'),
+(20, 'beata.mazur@example.com', 'bmazur', 'ilovepizza', 'ul. Cicha 7, Bydgoszcz, 85-001');
 
 -- --------------------------------------------------------
 
@@ -64,7 +102,7 @@ INSERT INTO `merch` (`id`, `name`, `size`, `type`, `quantity`, `img`, `alt`, `pr
 (12, 'Podkoszulek z czerwonym słońcem', 'm', 't-shirt', 50, 't-shirt3.jpg', 'podkoszulek', 50),
 (15, 'Podkoszulek z czerwonym słońcem', 'l', 't-shirt', 50, 't-shirt3.jpg', 'podkoszulek', 50),
 (16, 'Podkoszulek z rośliną', 'm', 't-shirt', 50, 't-shirt4.jpg', 'podkoszulek', 20),
-(17, 'Podkoszulek z rośliną', 'l', 't-shirt', 50, 't-shirt4.jpg', 'podoszulek', 20),
+(17, 'Podkoszulek z rośliną', 'l', 't-shirt', 50, 't-shirt4.jpg', 'podkoszulek', 20),
 (18, 'Lniana koszula beżowa', 'm', 'shirt', 40, 'shirt1.jpg', 'koszula lniana', 30),
 (19, 'Lniana koszula beżowa', 'l', 'shirt', 40, 'shirt1.jpg', 'koszula lniana', 30),
 (20, 'Marynarka w egzotyczne wzory', 'm', 'jacket', 20, 'jacket1.jpg', 'Marynarka w egzotyczne wzory', 70),
@@ -83,16 +121,15 @@ INSERT INTO `merch` (`id`, `name`, `size`, `type`, `quantity`, `img`, `alt`, `pr
 (33, 'Granatowa marynarka', 'l', 'jacket', 20, 'jacket3.jpg', 'Granatowa marynarka', 70),
 (34, 'Brązowa marynarka', 'm', 'jacket', 30, 'jacket2.jpg', 'Brązowa marynarka', 50),
 (35, 'Brązowa marynarka', 'l', 'jacket', 30, 'jacket2.jpg', 'Brązowa marynarka', 50),
-(36, 'Jeansy California', 'm', 'pants', 30, 'pants1.jpg', 'Jeansy ', 30),
+(36, 'Jeansy California', 'm', 'jeans', 30, 'pants1.jpg', 'Jeansy ', 30),
 (37, 'Jeansy California', 'l', 'pants', 30, 'pants1.jpg', 'Jeansy ', 30),
-(38, 'Jeansy Florida', 'm', 'jeansy', 30, 'pants2.jpg', 'Jeansy Florida', 30),
-(39, 'Jeansy Florida', 'l', 'jeansy', 30, 'pants2.jpg', 'Jeansy Florida', 30),
+(38, 'Jeansy Florida', 'm', 'jeans', 30, 'pants2.jpg', 'Jeansy Florida', 30),
+(39, 'Jeansy Florida', 'l', 'jeans', 30, 'pants2.jpg', 'Jeansy Florida', 30),
 (40, 'Szare spodenki', 'm', 'shorts', 30, 'shorts1.jpg', 'szare szorty', 20),
 (41, 'Szare spodenki', 'l', 'shorts', 30, 'shorts1.jpg', 'szare szorty', 20),
 (42, 'Pomarańczowe spodenki', 'm', 'shorts', 30, 'shorts2.jpg', 'Pomarańczowe', 20),
 (43, 'Pomarańczowe spodenki', 'l', 'shorts', 30, 'shorts2.jpg', 'Pomarańczowe', 20),
-(44, 'Beżowe', 'm', 'shorts', 30, 'shorts3.jpg', 'beżowe spodenki', 20),
-(45, 'Beżowe', 'l', 'shorts', 30, 'shorts3.jpg', 'beżowe spodenki', 20),
+(44, 'Beżowe spodenki', 'm', 'shorts', 30, 'shorts3.jpg', 'beżowe spodenki', 20),
 (46, 'Kolorowe buty sportowe', '41', 'shoes', 50, 'shoes1.jpg', 'Kolorowe buty sportowe', 40),
 (47, 'Kolorowe buty sportowe', '42', 'shoes', 50, 'shoes1.jpg', 'Kolorowe buty sportowe', 40),
 (48, 'Szare buty sportowe', '41', 'shoes', 40, 'shoes2.jpg', 'Szare buty sportowe', 50),
@@ -120,12 +157,27 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
   `merch_id` int(11) NOT NULL,
-  `address` int(11) NOT NULL
+  `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `client_id`, `merch_id`, `quantity`) VALUES
+(5, 11, 5, 1),
+(6, 11, 1, 1),
+(7, 11, 28, 1);
 
 --
 -- Indeksy dla zrzutów tabel
 --
+
+--
+-- Indeksy dla tabeli `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeksy dla tabeli `clients`
@@ -150,10 +202,16 @@ ALTER TABLE `orders`
 --
 
 --
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `merch`
@@ -165,7 +223,7 @@ ALTER TABLE `merch`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,13 +1,18 @@
 <?php
   session_start();
+  if(!isset($_SESSION['login'])){
+    header('Location: index.php');
+    }
   include 'dbconfig.php';
   include 'debug.php';
-  $conn = mysqli_connect($server,$user,$pass,$base);
-  $query = "SELECT DISTINCT name, img, alt, price FROM merch ORDER BY id DESC LIMIT 6;";
+  $conn = @mysqli_connect($server,$user,$pass,$base);
+  $cart_id = $_SESSION['id'];
+  $query = "SELECT m.name, m.size, m.img, m.alt, m.price, c.quantity, c.product_id, c.client_id, (m.price * c.quantity) AS total_price FROM cart c JOIN merch m ON c.product_id = m.id JOIN clients cl ON c.client_id = cl.id WHERE cl.id = $cart_id";
   $result = mysqli_query($conn,$query);
-  $rows = mysqli_fetch_all($result);
   
-  dump($_SESSION);
+  
+  
+  
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -22,7 +27,6 @@
     <link rel="stylesheet" href="./css/bootstrap-icons.min.css">
     <title>Projekt</title>
   </head>
-
   <body>
     <header>      
         <nav class="navbar nav-underline navbar-expand-lg bg-white ">
@@ -34,7 +38,7 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
               <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                  <a class="nav-link active p-2 ms-4" aria-current="page" href="#">Strona Główna</a>
+                  <a class="nav-link active p-2 ms-4" aria-current="page" href="index.php">Strona Główna</a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -83,7 +87,7 @@
         </nav>     
     </header>
 <!-------------------Koszyk offcanvas-->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Koszyk</h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -110,7 +114,7 @@
              
               while($rowsCart = mysqli_fetch_assoc($resultCart)):
                 $sum += ($rowsCart['price'] * $rowsCart['quantity']);
-                
+                dump($rowsCart);
               echo '
               <div class="card mb-3">
                   <div class="row g-0">
@@ -145,75 +149,55 @@
 <!------------------------------------------------>
     <!-- main -->
     <main class="container p-3">
-      <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8 landing-bg  m-4"><?= "<p class='text-center text-light fs-1 fw-bold align-text-bottom pt-5'>Nowa kolekcja " . date('Y')."</p>"?></div>
-        <div class="col-1"></div> 
-      </div>
       <div class="row gx-4">
+      <div class="row ">
+            <div class="col h2">Podsumowanie</div>
+          </div>
         <div class="col-2 ">
           
         </div>
         
         <div class="col-md-8 bg-light shadow rounded mx-4">
-          <div class="row ">
-            <div class="col h2">Co nowego?</div>
+          <div class="row p-2 "> 
+            <?php
+            if(!$numRows)
+            echo '<h3>Brak produktów w koszyku</h3>';
+            ?>
+            <?php 
+
+            
+              $_SESSION['cartProductId'] = [];
+              $_SESSION['cartProductQuantity'] = [];
+               
+            
+              while($rows = mysqli_fetch_assoc($result)): 
+              array_push($_SESSION['cartProductId'], $rows['product_id']);
+              array_push($_SESSION['cartProductQuantity'], $rows['quantity']);
+              $_SESSION['cartClientId'] = $rows['client_id'];
+              //dump($_SESSION['cartProductQuantity']);
+              ?>  
+                   
+                <div class="col-md-4 card  mb-2 rounded shadow">
+                  <div class="card-body p-4"><img src="./images/<?=$rows['img']?>" alt="<?= $rows['alt']?>" class="img-fluid d-block mx-auto mb-3">
+                    <h5> <a href="product.php?product=<?= $rows['img']?>" class="text-dark"><?= $rows['name']?></a></h5>
+                    <p class="small  font-italic  fs-5 ">Cena: <?= $rows['price'] . " zł"?> <a href ="deleteCartItem.php?id=<?=$rows['product_id']?>&page=summary"><button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button></a></p>
+                    <p class="small  font-italic  fs-5 ">Ilość: <?= $rows['quantity']?></p> 
+                    <p class="small  font-italic  fs-5 ">Rozmiar: <?= $rows['size']?></p> 
+                  </div>
+                </div>
+            <?php  endwhile; 
+            if($numRows):?>
+            <?= '<h4>SUMA: '.$sum.' zł</h4>';?>
+            <a href="makeOrder.php"><button type="button" class="btn btn-dark btn-lg">Złóż zamówienie</button></a>
+            <?php endif;?>
           </div>
-          
-          <div class="row p-2 ">  
-            <div class="col-md-6 card  rounded shadow">
-              <div class="card-body p-4"><img src="./images/<?=$rows[0][1]?>" alt="<?= $rows[0][2]?>" class="img-fluid d-block mx-auto mb-3">
-                <h5> <a href="#" class="text-dark"><?= $rows[0][0]?></a></h5>
-                <p class="small  font-italic  fs-5 ">Cena: <?= $rows[0][3] . " zł"?></p>
-                <a href="product.php?product=<?= $rows[0][1]?>"><button class="btn btn-primary">Sprawdź</button></a>
-              </div>
-            </div>
-            <div class="col-md-6 card rounded shadow">
-              <div class="card-body p-4"><img src="./images/<?=$rows[1][1]?>" alt="<?= $rows[1][2]?>" class="img-fluid d-block mx-auto mb-3">
-                <h5> <a href="#" class="text-dark"><?= $rows[1][0]?></a></h5>
-                <p class="small  font-italic  fs-5 ">Cena: <?= $rows[1][3] . " zł"?></p>
-                <a href="product.php?product=<?= $rows[1][1]?>"><button class="btn btn-primary">Sprawdź</button></a>
-              </div>
-            </div>
-          </div>
-          <div class="row p-2">  
-            <div class="col-md-6 card  rounded shadow">
-              <div class="card-body p-4"><img src="./images/<?=$rows[2][1]?>" alt="<?= $rows[2][2]?>" class="img-fluid d-block mx-auto mb-3">
-                <h5> <a href="#" class="text-dark"><?= $rows[2][0]?></a></h5>
-                <p class="small  font-italic  fs-5 ">Cena: <?= $rows[2][3] . " zł"?></p>
-                <a href="product.php?product=<?= $rows[2][1]?>"><button class="btn btn-primary">Sprawdź</button></a>
-              </div>
-            </div>
-            <div class="col-md-6 card rounded shadow">
-              <div class="card-body p-4"><img src="./images/<?=$rows[3][1]?>" alt="<?= $rows[3][2]?>" class="img-fluid d-block mx-auto mb-3">
-                <h5> <a href="#" class="text-dark"><?= $rows[3][0]?></a></h5>
-                <p class="small  font-italic  fs-5 ">Cena: <?= $rows[3][3] . " zł"?></p>
-                <a href="product.php?product=<?= $rows[3][1]?>"><button class="btn btn-primary">Sprawdź</button></a>
-              </div>
-            </div>
-          </div>
-          <div class="row p-2">  
-            <div class="col-md-6 card  rounded shadow">
-              <div class="card-body p-4"><img src="./images/<?=$rows[4][1]?>" alt="<?= $rows[4][2]?>" class="img-fluid d-block mx-auto mb-3">
-                <h5> <a href="#" class="text-dark"><?= $rows[4][0]?></a></h5>
-                <p class="small  font-italic  fs-5 ">Cena: <?= $rows[4][3] . " zł"?></p>
-                <a href="product.php?product=<?= $rows[4][1]?>"><button class="btn btn-primary">Sprawdź</button></a>
-              </div>
-            </div>
-            <div class="col-md-6 card rounded shadow">
-              <div class="card-body p-4"><img src="./images/<?=$rows[5][1]?>" alt="<?= $rows[5][2]?>" class="img-fluid d-block mx-auto mb-3">
-                <h5> <a href="#" class="text-dark"><?= $rows[5][0]?></a></h5>
-                <p class="small  font-italic  fs-5 ">Cena: <?= $rows[5][3] . " zł"?></p>
-                <a href="product.php?product=<?= $rows[5][1]?>"><button class="btn btn-primary">Sprawdź</button></a>
-            </div>
-          </div>
-          
-        </div>
+          <a href="addToOrders.php"></a>
+        </div>   
         
         <div class="col-1"></div>
       </div>
     </main>
-    <footer class="container-fluid footer-bg shadow">
+    <footer class="container-fluid footer-bg shadow <?php  if($numRows <= 3) echo 'fixed-bottom';?>">
       <div class="row grey-bg ">
         <div class="col-4 footer-bg text-center p-3">
           <?= "Projekt&copy " . date('Y');  ?>

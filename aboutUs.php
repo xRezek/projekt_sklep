@@ -72,7 +72,7 @@
         </nav>     
     </header>
 <!-------------------Koszyk offcanvas-->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Koszyk</h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -82,9 +82,50 @@
           <?php
             if(!isset($_SESSION['login'])){
               echo '<h3>Musisz się zalogować aby zobaczyć swój koszyk</h3>';
+              
             }
             else{
-              echo '<h3>koszyk</h3>';
+              $cart_id = $_SESSION['id'];
+              $queryCart = "SELECT m.name, m.size, m.img, m.alt, m.price, c.quantity, c.product_id FROM cart c JOIN merch m ON c.product_id = m.id JOIN clients cl ON c.client_id = cl.id WHERE cl.id = $cart_id";
+              $resultCart = mysqli_query($conn,$queryCart);
+              $numRows = mysqli_num_rows($resultCart);
+              $sum = 0;
+              
+              
+              
+              mysqli_close($conn);
+              
+
+             
+              while($rowsCart = mysqli_fetch_assoc($resultCart)):
+                $sum += ($rowsCart['price'] * $rowsCart['quantity']);
+                
+              echo '
+              <div class="card mb-3">
+                  <div class="row g-0">
+                      <div class="col-md-4 mt-5">
+                          <img src="./images/' . $rowsCart['img'] . '" class="img-fluid rounded-start" alt="' . $rowsCart['alt'] . '">
+                      </div>
+                      <div class="col-md-8">
+                          <div class="card-body">
+                              <h5 class="card-title">' . $rowsCart['name'] . '</h5>
+                              <p class="card-text">Rozmiar: ' . $rowsCart['size'] . '</p>
+                              <p class="card-text">Cena: ' . $rowsCart['price'] . '</p>
+                              <p class="card-text">Ilość: ' . $rowsCart['quantity'] . '</p>
+                              <a href ="deleteCartItem.php?id='.$rowsCart['product_id'].'"><button class="btn btn-danger btn-sm">Usuń</button></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>';
+              
+              endwhile;
+
+              
+              if($numRows>0){
+                echo '<h4>SUMA: '.$sum.' zł</h4>';
+                echo '<a class="text-center" href="summary.php"><button type="button" class="btn btn-dark btn-lg">Przejdź do podsumowania</button></a>';
+              }
+                          
             }
           ?>
         </div>      
