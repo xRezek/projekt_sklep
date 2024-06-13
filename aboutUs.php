@@ -1,5 +1,7 @@
 <?php
   session_start();
+  include 'dbconfig.php';
+  include 'debug.php';
 
 ?>
 <!DOCTYPE html>
@@ -23,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
               <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                  <a class="nav-link active p-2 ms-4" aria-current="page" href="#">Strona Główna</a>
+                  <a class="nav-link  p-2 ms-4" aria-current="page" href="index.php">Strona Główna</a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -41,14 +43,14 @@
                     <li><a class="dropdown-item" href="listOfProducts.php?type=shoes">Buty</a></li>
                   </ul>
                 <li class="nav-item">
-                  <a class="nav-link p-2 ms-4" href="aboutUs.php">O Nas</a>
+                  <a class="nav-link active p-2 ms-4" href="aboutUs.php">O Nas</a>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle p-2 ms-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Kontakt
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="careers.php">Kariera</a></li>
+                    <li><a class="dropdown-item" href="#">Kariera</a></li>
                     <li><a class="dropdown-item" href="#">Wsparcie</a></li>
                   </ul>
                 </li>
@@ -85,6 +87,7 @@
               
             }
             else{
+              $conn = mysqli_connect($server, $user, $pass, $base);
               $cart_id = $_SESSION['id'];
               $queryCart = "SELECT m.name, m.size, m.img, m.alt, m.price, c.quantity, c.product_id FROM cart c JOIN merch m ON c.product_id = m.id JOIN clients cl ON c.client_id = cl.id WHERE cl.id = $cart_id";
               $resultCart = mysqli_query($conn,$queryCart);
@@ -95,11 +98,10 @@
               
               mysqli_close($conn);
               
-
+              
              
               while($rowsCart = mysqli_fetch_assoc($resultCart)):
                 $sum += ($rowsCart['price'] * $rowsCart['quantity']);
-                
               echo '
               <div class="card mb-3">
                   <div class="row g-0">
@@ -124,6 +126,8 @@
               if($numRows>0){
                 echo '<h4>SUMA: '.$sum.' zł</h4>';
                 echo '<a class="text-center" href="summary.php"><button type="button" class="btn btn-dark btn-lg">Przejdź do podsumowania</button></a>';
+              }else{
+                echo '<h4>Brak prodóktów w koszyku</h4>';
               }
                           
             }
@@ -135,7 +139,7 @@
     <main class="container-fluid">    
       <div class="row">
         <div class="col pt-2">
-          <img src="./images/_5930f66c-823c-46e8-8ad0-c9cb37188f04.jpg" alt="Modelka" class="img-fluid">
+          <img src="./images/_c944339c-6e6b-49f4-85cc-c4356803382f.jpg" alt="Model" class="img-fluid">
           <img src="./images/_b8557617-f6bf-4a3b-98d6-4e16559a55e9.jpg " alt="Model" class="img-fluid mt-1">
             
         </div>
@@ -161,7 +165,7 @@
         </div>
         <div class="col pt-2">
           <img src="./images/_4787f272-331e-468c-a7e2-70c5ca7ec429.jpg" alt="model" class="img-fluid">
-          <img src="./images/_724368c0-0cf9-4d4f-b02c-3edbd2ae4092.jpg" alt="Modelka" class="img-fluid mt-1">
+          <img src="./images/_985cb3cc-fcda-4b99-b89a-9812420c9e44.jpg" alt="Model" class="img-fluid mt-1">
         </div>
       </div>
 </main> 

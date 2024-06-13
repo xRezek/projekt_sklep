@@ -1,8 +1,98 @@
 <?php
   session_start();
+  include 'dbconfig.php';
+  include 'debug.php';
+
   if(isset($_SESSION['login']))
     header('Location: index.php');
+  ############################
+  if(isset($_POST['email'])){
+    // flaga walidacji
+    $good = true;
+
+    // Login check
+    $login = $_POST['login'];
+    if(strlen($login)<3 || strlen($login)>20){
+      $good = false;
+      $_SESSION['e_login'] ="Login musi posiadać od 3 do 20 znaków"; 
+    }
+  if(!ctype_alnum($login)){
+      $good = false;
+      $_SESSION['e_login'] = "Login może zawierać tylko cyfry i litery alfabetu łacińskiego ";
+    }
   
+    // e-mail check
+    $email = $_POST['email'];
+    $email_good = filter_var($email, FILTER_SANITIZE_EMAIL);
+    if(!filter_var($email_good,FILTER_VALIDATE_EMAIL) || $email_good != $email ){
+        $good = false;
+        $_SESSION['e_email'] = "Podaj poprawny adres e-mail";
+    }
+    // password check
+    $password = $_POST['password'];
+    $password_c = $_POST['password_confirm'];
+    if(strlen($password) < 8 || strlen($password) > 20){
+        $good = false;
+        $_SESSION['e_password'] = "Hasło musi posiadać od 8 do 20 znaków";
+    }
+    if($password != $password_c){
+        $good = false;
+        $_SESSION['e_password_c'] = "Hasła muszą być identyczne";
+    }
+    // checkbox check
+    if(!isset($_POST['iAgree'])){
+      $good = false;
+      $_SESSION['e_checkbox'] = "Zaakceptuj regulamin";
+    }
+    //address check
+    $address = htmlentities($_POST['address'], ENT_QUOTES);
+
+    
+    try{
+               
+      $conn = new mysqli($server,$user,$pass,$base);
+      if($conn->connect_errno!=0){
+          throw new Exception(mysqli_connect_errno());
+      }else{
+          $result = $conn->query("SELECT id FROM clients WHERE email='$email'");
+          if(!$result) throw new Exception($conn->error);
+          $email_amount = $result->num_rows;
+          if($email_amount>0){
+              $good = false;
+              $_SESSION['e_email'] = "Istnieje już konto o podanym adresie email";
+
+          }
+          // Login check
+          $result = $conn->query("SELECT id FROM clients WHERE login='$login'");
+          if(!$result) throw new Exception($conn->error);
+          $login_amount = $result->num_rows;
+          if($login_amount>0){
+              $good = false;
+              $_SESSION['e_login'] = "Istnieje już użytkownik o podanym loginie";
+
+          }
+          if($good==true){
+              //it works!
+              if($conn->query("INSERT INTO clients VALUES(NULL,'$email','$login',sha1($password), '$address')")){
+                  $_SESSION['everythingIsGood'] = true;
+                  header('Location: login.php');
+
+              }else{
+                  throw new Exception($conn->error);
+              }
+              
+          }
+
+          $conn->close();
+      }
+
+  }catch(Exception $e){
+      echo "<span class='text-danger'> Błąd serewera. Przepraszamy za utrudnienia.</span>";
+      echo $e;
+  }
+  }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -59,8 +149,8 @@
                   </ul>
                 </li>
               </ul>
-              <div class="nav-item  p-2 d-flex"><a href="#" class="nav-link active">Zaloguj się</a></div>
-              <div class="nav-item p-2 d-flex"><a href="register.php" class="nav-link">Zarejestruj się</a></div>
+              <div class="nav-item p-2 d-flex"><a href="login.php" class="nav-link">Zaloguj się</a></div>
+              <div class="nav-item  p-2 d-flex"><a href="#" class="nav-link active">Zarejestruj się</a></div>
               <div class="nav-item p-2 d-flex">
                 <a href="#">
                   <button class="d-flex btn-lg btn btn-light text-nowrap btn-outline-dark me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -86,6 +176,7 @@
               
             }
             else{
+              $conn = mysqli_connect($server,$user,$pass,$base);
               $cart_id = $_SESSION['id'];
               $queryCart = "SELECT m.name, m.size, m.img, m.alt, m.price, c.quantity, c.product_id FROM cart c JOIN merch m ON c.product_id = m.id JOIN clients cl ON c.client_id = cl.id WHERE cl.id = $cart_id";
               $resultCart = mysqli_query($conn,$queryCart);
@@ -100,7 +191,6 @@
              
               while($rowsCart = mysqli_fetch_assoc($resultCart)):
                 $sum += ($rowsCart['price'] * $rowsCart['quantity']);
-                dump($rowsCart);
               echo '
               <div class="card mb-3">
                   <div class="row g-0">
@@ -136,50 +226,97 @@
     </div>
 <!------------------------------------------------>
     <!-- main -->
-    <main class="container p-3">
-    <section class="bg-light py-3 py-md-5">
-
+    <main class="container p-1">
+<section class="bg-light py-1 py-md-3">
+  <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-        <div class="card border border-light-subtle rounded-3 shadow">
+        <div class="card border border-light-subtle rounded-3 shadow-sm">
           <div class="card-body p-3 p-md-4 p-xl-5">
             <div class="text-center mb-3">
+              <a href="#!">
               <img src="./images/logo.jpg" alt="BootstrapBrain Logo" width="200" height="175">
+              </a>
             </div>
-            <form action="validateLogin.php" method="POST">
+            <h2 class="fs-6 fw-normal text-center text-secondary mb-4">Podaj dane do rejestracji</h2>
+            <form action="register.php" method="POST">
               <div class="row gy-2 overflow-hidden">
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="login" id="login" placeholder="Login" required>
+                    <label for="lastName" class="form-label">Login</label>
+                    <?php 
+                        if(isset($_SESSION['e_login'])){
+                        echo "<span class='text-danger'>".$_SESSION['e_login']."</span>" ;
+                        unset($_SESSION['e_login']);
+                        }
+                    ?>
+                  </div>
+                </div>
+                
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="address" id="address" placeholder="ul. Polna 1, Sosnowiec, 22-333" required>
+                    <label for="lastName" class="form-label">Adres (ulica , miasto , kod pocztowy)</label>
+                  </div>
+                </div>
                 <div class="col-12">
                   <div class="form-floating mb-3">
                     <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
                     <label for="email" class="form-label">Email</label>
+                    <?php 
+                        if(isset($_SESSION['e_email'])){
+                        echo "<span class='text-danger'>".$_SESSION['e_email']."</span>" ;
+                        unset($_SESSION['e_email']);
+                        }
+                    ?>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-floating mb-3">
                     <input type="password" class="form-control" name="password" id="password" value="" placeholder="Hasło" required>
                     <label for="password" class="form-label">Hasło</label>
-                    
-                  </div>
-                  <?php
-                      if(isset($_SESSION['badCredentials'])){
-                        echo '<span class="text-danger">'.$_SESSION['badCredentials'].'</span>';
-                        unset($_SESSION['badCredentials']);
-                      }
-                        
+                    <?php 
+                        if(isset($_SESSION['e_password'])){
+                        echo "<span class='text-danger'>".$_SESSION['e_password']."</span>" ;
+                        unset($_SESSION['e_password']);
+                        }
                     ?>
+                  </div>
                 </div>
                 <div class="col-12">
-                  <div class="d-flex gap-2 justify-content-between">
-                    <a href="#!" class="link-dark text-decoration-none">Zapomniałeś hasła?</a>
+                  <div class="form-floating mb-3">
+                    <input type="password" class="form-control" name="password_confirm" id="password_confirm" value="" placeholder="Potwierdź hasło" required>
+                    <label for="password" class="form-label">Potwierdź hasło</label>
+                  </div>
+                  <?php 
+                      if(isset($_SESSION['e_password_c'])){
+                      echo "<span class='text-danger'>".$_SESSION['e_password_c']."</span>" ;
+                      unset($_SESSION['e_password_c']);
+                      }
+                  ?>
+                </div>
+                <div class="col-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" name="iAgree" id="iAgree" required>
+                    <label class="form-check-label text-secondary" for="iAgree">
+                      Akceptuję <a href="#!" class="link-dark text-decoration-none">regulamin</a>
+                    </label><br>
+                    <?php 
+                        if(isset($_SESSION['e_checkbox'])){
+                        echo "<span class='text-danger'>".$_SESSION['e_checkbox']."</span>" ;
+                        unset($_SESSION['e_checkbox']);
+                        }
+                    ?>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="d-grid my-3">
-                    <button class="btn btn-dark btn-lg" type="submit">Zaloguj się</button>
+                    <button class="btn btn-dark btn-lg" type="submit">Zarejestruj się</button>
                   </div>
                 </div>
                 <div class="col-12">
-                  <p class="m-0 text-secondary text-center">Nie masz konta? <a href="register.php" class="link-dark text-decoration-none">Zarejestruj się</a></p>
+                  <p class="m-0 text-secondary text-center">Masz już konto? <a href="login.php" class="link-dark text-decoration-none">Zaloguj się</a></p>
                 </div>
               </div>
             </form>
@@ -187,6 +324,7 @@
         </div>
       </div>
     </div>
+  </div>
 </section>
 
 

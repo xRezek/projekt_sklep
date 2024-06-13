@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\elementType;
+
   session_start();
   if(!isset($_SESSION['login'])){
     header('Location: index.php');
@@ -73,7 +76,7 @@
                 <div class="nav-item p-2 d-flex"><a href="logout.php" class="nav-link">Wyloguj się</a></div>
               <?php else:?>
                 <div class="nav-item p-2 d-flex"><a href="login.php" class="nav-link">Zaloguj się</a></div>
-                <div class="nav-item p-2 d-flex"><a href="#" class="nav-link">Zarejestruj się</a></div>
+                <div class="nav-item p-2 d-flex"><a href="register.php" class="nav-link">Zarejestruj się</a></div>
               <?php endif;?>  
               <div class="nav-item p-2 d-flex">
                 <a href="#">
@@ -110,7 +113,7 @@
               
               mysqli_close($conn);
               
-
+              
              
               while($rowsCart = mysqli_fetch_assoc($resultCart)):
                 $sum += ($rowsCart['price'] * $rowsCart['quantity']);
@@ -139,6 +142,8 @@
               if($numRows>0){
                 echo '<h4>SUMA: '.$sum.' zł</h4>';
                 echo '<a class="text-center" href="summary.php"><button type="button" class="btn btn-dark btn-lg">Przejdź do podsumowania</button></a>';
+              }else{
+                echo '<h4>Brak produktów w koszyku</h4>';
               }
                           
             }
@@ -174,7 +179,6 @@
               array_push($_SESSION['cartProductId'], $rows['product_id']);
               array_push($_SESSION['cartProductQuantity'], $rows['quantity']);
               $_SESSION['cartClientId'] = $rows['client_id'];
-              //dump($_SESSION['cartProductQuantity']);
               ?>  
                    
                 <div class="col-md-4 card  mb-2 rounded shadow">

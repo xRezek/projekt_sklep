@@ -7,7 +7,6 @@
   $result = mysqli_query($conn,$query);
   $rows = mysqli_fetch_all($result);
   
-  dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -15,7 +14,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="./images/clothes-rack.png"> <!-- <a https://www.flaticon.com/free-icons/clothes Clothes icons created by Freepik - Flaticon  -->
+    <link rel="icon" type="image/x-icon" href="./images/clothes-rack.png"> <!-- https://www.flaticon.com/free-icons/clothes Clothes icons created by Freepik - Flaticon-->
     <link rel="stylesheet" href="./css/clearstyle.css">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
@@ -24,7 +23,14 @@
   </head>
 
   <body>
-    <header>      
+        <?php 
+          if(isset($_SESSION['order'])){
+            echo $_SESSION['order'];
+            unset($_SESSION['order']);
+          }
+        ?>
+    <header> 
+           
         <nav class="navbar nav-underline navbar-expand-lg bg-white ">
           <div class="container-fluid">
             <a class="navbar-brand" href="#"><img class="img-fluid" width="70" length="70" src="./images/logo.jpg"></a>
@@ -69,7 +75,7 @@
                 <div class="nav-item p-2 d-flex"><a href="logout.php" class="nav-link">Wyloguj się</a></div>
               <?php else:?>
                 <div class="nav-item p-2 d-flex"><a href="login.php" class="nav-link">Zaloguj się</a></div>
-                <div class="nav-item p-2 d-flex"><a href="#" class="nav-link">Zarejestruj się</a></div>
+                <div class="nav-item p-2 d-flex"><a href="register.php" class="nav-link">Zarejestruj się</a></div>
               <?php endif;?>  
               <div class="nav-item p-2 d-flex">
                 <a href="#">
@@ -106,11 +112,10 @@
               
               mysqli_close($conn);
               
-
+              
              
               while($rowsCart = mysqli_fetch_assoc($resultCart)):
                 $sum += ($rowsCart['price'] * $rowsCart['quantity']);
-                
               echo '
               <div class="card mb-3">
                   <div class="row g-0">
@@ -135,6 +140,8 @@
               if($numRows>0){
                 echo '<h4>SUMA: '.$sum.' zł</h4>';
                 echo '<a class="text-center" href="summary.php"><button type="button" class="btn btn-dark btn-lg">Przejdź do podsumowania</button></a>';
+              }else{
+                echo '<h4>Brak produktów w koszyku</h4>';
               }
                           
             }

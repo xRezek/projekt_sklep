@@ -7,7 +7,7 @@
  $rows = mysqli_fetch_assoc($result);
  session_start();
  //dump($rows);
- mysqli_close($conn);
+ //mysqli_close($conn);
  ?>
  <!DOCTYPE html>
 <html lang="pl-PL">
@@ -46,22 +46,22 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
               <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                  <a class="nav-link p-2 ms-4" aria-current="page" href="index.php">Strona Główna</a>
+                  <a class="nav-link active p-2 ms-4" aria-current="page" href="index.php">Strona Główna</a>
                 </li>
 
                 <li class="nav-item dropdown">
-                  <a class="nav-link active dropdown-toggle p-2 ml-4 ms-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle p-2 ml-4 ms-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Produkty
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Wszystko</a></li>
-                    <li><a class="dropdown-item" href="#">Marynarka</a></li>
-                    <li><a class="dropdown-item" href="#">Koszule z krótkim rękawem</a></li>
-                    <li><a class="dropdown-item" href="#">Kouszula</a></li>
-                    <li><a class="dropdown-item" href="#">Podkoszulki</a></li>
-                    <li><a class="dropdown-item" href="#">Spodenki</a></li>
-                    <li><a class="dropdown-item" href="#">Spodnie</a></li>
-                    <li><a class="dropdown-item" href="#">Buty</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=all">Wszystko</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=jacket">Marynarka</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=shirt">Koszule z krótkim rękawem</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=suitShirt"">Kouszula</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=t-shirt">Podkoszulki</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=shorts">Spodenki</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=jeans">Spodnie</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=shoes">Buty</a></li>
                   </ul>
                 <li class="nav-item">
                   <a class="nav-link p-2 ms-4" href="aboutUs.php">O Nas</a>
@@ -76,8 +76,13 @@
                   </ul>
                 </li>
               </ul>
-              <div class="nav-item p-2 d-flex"><a href="#" class="nav-link">Zaloguj się</a></div>
-              <div class="nav-item p-2 d-flex"><a href="#" class="nav-link">Zarejestruj się</a></div>
+              <?php if(isset($_SESSION['login'])):?>
+                <div class="nav-item p-2 d-flex"><?= 'Witaj ' . $_SESSION['login'].' &#9787'?></div>
+                <div class="nav-item p-2 d-flex"><a href="logout.php" class="nav-link">Wyloguj się</a></div>
+              <?php else:?>
+                <div class="nav-item p-2 d-flex"><a href="login.php" class="nav-link">Zaloguj się</a></div>
+                <div class="nav-item p-2 d-flex"><a href="register.php" class="nav-link">Zarejestruj się</a></div>
+              <?php endif;?>  
               <div class="nav-item p-2 d-flex">
                 <a href="#">
                   <button class="d-flex btn-lg btn btn-light text-nowrap btn-outline-dark me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -97,7 +102,56 @@
       </div>
       <div class="offcanvas-body">
         <div>
-          Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+          <?php
+            if(!isset($_SESSION['login'])){
+              echo '<h3>Musisz się zalogować aby zobaczyć swój koszyk</h3>';
+              
+            }
+            else{
+              $cart_id = $_SESSION['id'];
+              $queryCart = "SELECT m.name, m.size, m.img, m.alt, m.price, c.quantity, c.product_id FROM cart c JOIN merch m ON c.product_id = m.id JOIN clients cl ON c.client_id = cl.id WHERE cl.id = $cart_id";
+              $resultCart = mysqli_query($conn,$queryCart);
+              $numRows = mysqli_num_rows($resultCart);
+              $sum = 0;
+              
+              
+              
+              mysqli_close($conn);
+              
+              
+             
+              while($rowsCart = mysqli_fetch_assoc($resultCart)):
+                $sum += ($rowsCart['price'] * $rowsCart['quantity']);
+              echo '
+              <div class="card mb-3">
+                  <div class="row g-0">
+                      <div class="col-md-4 mt-5">
+                          <img src="./images/' . $rowsCart['img'] . '" class="img-fluid rounded-start" alt="' . $rowsCart['alt'] . '">
+                      </div>
+                      <div class="col-md-8">
+                          <div class="card-body">
+                              <h5 class="card-title">' . $rowsCart['name'] . '</h5>
+                              <p class="card-text">Rozmiar: ' . $rowsCart['size'] . '</p>
+                              <p class="card-text">Cena: ' . $rowsCart['price'] . '</p>
+                              <p class="card-text">Ilość: ' . $rowsCart['quantity'] . '</p>
+                              <a href ="deleteCartItem.php?id='.$rowsCart['product_id'].'"><button class="btn btn-danger btn-sm">Usuń</button></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>';
+              
+              endwhile;
+
+              
+              if($numRows>0){
+                echo '<h4>SUMA: '.$sum.' zł</h4>';
+                echo '<a class="text-center" href="summary.php"><button type="button" class="btn btn-dark btn-lg">Przejdź do podsumowania</button></a>';
+              }else{
+                echo '<h4>Brak produktów w koszyku</h4>';
+              }
+                          
+            }
+          ?>
         </div>      
       </div>
     </div>

@@ -13,8 +13,9 @@ if(!$conn){
 }else{
 
   $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL); 
-  $password = $_POST['password'];
+  $password = sha1($_POST['password']);
   $sql = "SELECT * FROM clients WHERE email = '$email' AND password = '$password'";
+  echo sha1($password);
   $result = $conn->query($sql);
     
 
@@ -28,7 +29,8 @@ if(!$conn){
 
     
   }else{
-    die("Nie ma użytkownika o takich pasach.");
+    $_SESSION['badCredentials'] = "Niepoprawny login lub hasło.";
+    header('Location: login.php');
   }
 
   mysqli_close($conn);

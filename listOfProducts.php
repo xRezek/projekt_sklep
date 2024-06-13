@@ -33,18 +33,18 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
               <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                  <a class="nav-link active p-2 ms-4" aria-current="page" href="#">Strona Główna</a>
+                  <a class="nav-link p-2 ms-4" aria-current="page" href="index.php">Strona Główna</a>
                 </li>
 
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle p-2 ml-4 ms-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle active p-2 ml-4 ms-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Produkty
                   </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="listOfProducts.php?type=all">Wszystko</a></li>
                     <li><a class="dropdown-item" href="listOfProducts.php?type=jacket">Marynarka</a></li>
                     <li><a class="dropdown-item" href="listOfProducts.php?type=shirt">Koszule z krótkim rękawem</a></li>
-                    <li><a class="dropdown-item" href="listOfProducts.php?type=suitShirt"">Kouszula</a></li>
+                    <li><a class="dropdown-item" href="listOfProducts.php?type=suitShirt">Kouszula</a></li>
                     <li><a class="dropdown-item" href="listOfProducts.php?type=t-shirt">Podkoszulki</a></li>
                     <li><a class="dropdown-item" href="listOfProducts.php?type=shorts">Spodenki</a></li>
                     <li><a class="dropdown-item" href="listOfProducts.php?type=jeans">Spodnie</a></li>
@@ -68,7 +68,7 @@
                 <div class="nav-item p-2 d-flex"><a href="logout.php" class="nav-link">Wyloguj się</a></div>
               <?php else:?>
                 <div class="nav-item p-2 d-flex"><a href="login.php" class="nav-link">Zaloguj się</a></div>
-                <div class="nav-item p-2 d-flex"><a href="#" class="nav-link">Zarejestruj się</a></div>
+                <div class="nav-item p-2 d-flex"><a href="register.php" class="nav-link">Zarejestruj się</a></div>
               <?php endif;?>  
               <div class="nav-item p-2 d-flex">
                 <a href="#">

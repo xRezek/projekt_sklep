@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Cze 11, 2024 at 11:22 PM
+-- Generation Time: Cze 13, 2024 at 03:36 AM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -34,15 +34,6 @@ CREATE TABLE `cart` (
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`id`, `client_id`, `product_id`, `quantity`) VALUES
-(12, 11, 5, 1),
-(13, 11, 1, 1),
-(14, 11, 28, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -62,16 +53,17 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `email`, `login`, `password`, `address`) VALUES
-(11, 'jan.kowalski@example.com', 'jkowalski', 'pass123', 'ul. Słoneczna 15, Warszawa, 00-001'),
-(12, 'anna.nowak@example.com', 'anowak', 'secure456', 'ul. Kwiatowa 32, Kraków, 30-001'),
-(13, 'tomasz.adamczyk@example.com', 'tadamczyk', 'qwerty789', 'ul. Długa 8, Poznań, 60-101'),
-(14, 'agnieszka.wozniak@example.com', 'awozniak', 'password12', 'ul. Krótka 22, Wrocław, 50-001'),
-(15, 'pawel.zielinski@example.com', 'pzielinski', 'abc123xyz', 'ul. Szkolna 5, Gdańsk, 80-001'),
-(16, 'ewa.kaczmarek@example.com', 'ekaczmarek', 'secret321', 'ul. Miodowa 14, Szczecin, 70-001'),
-(17, 'michal.lewandowski@example.com', 'mlewandowski', 'mypassword', 'ul. Leśna 9, Łódź, 90-001'),
-(18, 'katarzyna.kwiatkowska@example.com', 'kkwiatkowska', 'letmein123', 'ul. Polna 3, Lublin, 20-001'),
-(19, 'wojciech.nowicki@example.com', 'wnowicki', 'changeme', 'ul. Lipowa 18, Katowice, 40-001'),
-(20, 'beata.mazur@example.com', 'bmazur', 'ilovepizza', 'ul. Cicha 7, Bydgoszcz, 85-001');
+(11, 'jan.kowalski@example.com', 'jkowalski', 'aafdc23870ecbcd3d557b6423a8982134e17927e', 'ul. Słoneczna 15, Warszawa, 00-001'),
+(12, 'anna.nowak@example.com', 'anowak', '7b3adfecdc540c3e5231fde6521836809aefe32a', 'ul. Kwiatowa 32, Kraków, 30-001'),
+(13, 'tomasz.adamczyk@example.com', 'tadamczyk', '7b954c3a93a4b4f5dc72d9ef748b4308f4e6ac14', 'ul. Długa 8, Poznań, 60-101'),
+(14, 'agnieszka.wozniak@example.com', 'awozniak', '10c28f9cf0668595d45c1090a7b4a2ae98edfa58', 'ul. Krótka 22, Wrocław, 50-001'),
+(15, 'pawel.zielinski@example.com', 'pzielinski', '1d278c7a5057bac15828468f030f52f07caf70bb', 'ul. Szkolna 5, Gdańsk, 80-001'),
+(16, 'ewa.kaczmarek@example.com', 'ekaczmarek', 'b850d57ea2479628a0c5dbf22c0616ed4c04b405', 'ul. Miodowa 14, Szczecin, 70-001'),
+(17, 'michal.lewandowski@example.com', 'mlewandowski', '91dfd9ddb4198affc5c194cd8ce6d338fde470e2', 'ul. Leśna 9, Łódź, 90-001'),
+(18, 'katarzyna.kwiatkowska@example.com', 'kkwiatkowska', 'e286977b13f1a89e20d0459207545d15fe1eba08', 'ul. Polna 3, Lublin, 20-001'),
+(19, 'wojciech.nowicki@example.com', 'wnowicki', 'fa9beb99e4029ad5a6615399e7bbae21356086b3', 'ul. Lipowa 18, Katowice, 40-001'),
+(20, 'beata.mazur@example.com', 'bmazur', '642d5bf2fa5b32a04e597f2a78989f9210df8501', 'ul. Cicha 7, Bydgoszcz, 85-001'),
+(21, 'mm@mm.pl', 'mmam', '7c222fb2927d828af22f592134e8932480637c0d', 'ul. Polna 1, Sosnowiec , 22-333');
 
 -- --------------------------------------------------------
 
@@ -165,9 +157,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `client_id`, `merch_id`, `quantity`) VALUES
-(5, 11, 5, 1),
-(6, 11, 1, 1),
-(7, 11, 28, 1);
+(24, 20, 16, 1),
+(25, 20, 18, 1),
+(26, 20, 5, 1);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -205,25 +197,25 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `merch`
 --
 ALTER TABLE `merch`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
