@@ -181,7 +181,7 @@
                                                 <input type="hidden" name="product-size" id="product-size" value="M">
                                             </li>
                                             <?php if($rows['type']!='shoes'): ?>
-                                              <li class="list-inline-item"><span class="btn btn-secondary btn-size">M</span></li>
+                                              <li class="list-inline-item"><span class="btn btn-secondary btn-dark btn-size">M</span></li>
                                               <li class="list-inline-item"><span class="btn btn-secondary btn-size">L</span></li>
                                             <?php else: ?>
                                               <li class="list-inline-item"><span class="btn btn-secondary btn-size">41</span></li>

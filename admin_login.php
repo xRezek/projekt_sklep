@@ -8,6 +8,7 @@
     $adminLogin = $_POST['adminLogin'];
     $adminPassword = $_POST['adminPassword'];   
   if( $adminLogin =='admin' && $adminPassword =='admin'){
+    $_SESSION['adminLogged'] = true;
     header('Location: adminPanel.php');
   }
   

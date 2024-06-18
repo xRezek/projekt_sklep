@@ -1,5 +1,7 @@
 <?php
   session_start();
+    if(!isset($_SESSION['adminLogged']))
+      header('Location: index.php');
   include 'debug.php';
   include 'dbconfig.php'; 
   $conn = mysqli_connect($server, $user, $pass, $base);
