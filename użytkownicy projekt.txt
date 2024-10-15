@@ -1,0 +1,11 @@
+jan.kowalski@example.com |    pass123
+anna.nowak@example.com |      secure456
+tomasz.adamczyk@example.com | qwerty789
+agnieszka.wozniak@example.com | password12
+pawel.zielinski@example.com | abc123xyz
+ewa.kaczmarek@example.com |   secret321
+michal.lewandowski@example.com | mypassword
+katarzyna.kwiatkowska@example.com | letmein123
+wojciech.nowicki@example.com | changeme
+beata.mazur@example.com |     ilovepizza
+mm@mm.pl | 12345678
