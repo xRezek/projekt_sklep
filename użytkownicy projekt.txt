@@ -1,3 +1,4 @@
+#Testowi użytkownicy
 jan.kowalski@example.com |    pass123
 anna.nowak@example.com |      secure456
 tomasz.adamczyk@example.com | qwerty789
