@@ -1,6 +1,6 @@
 # Projekt Sklep
 
-To jest aplikacja internetowa dla sklepu online. Projekt zawiera różne funkcje, takie jak uwierzytelnianie użytkowników, lista produktów, koszyk i zarządzanie zamówieniami.
+To jest aplikacja internetowa dla sklepu online stworzona na zaliczenie przedmiotu bazy danych. Projekt zawiera różne funkcje, takie jak uwierzytelnianie użytkowników, lista produktów, koszyk i zarządzanie zamówieniami.
 
 ## Spis treści
 
